@@ -34,7 +34,7 @@ int _tmain(int argc, TCHAR *argv[])
 
 	// Loop until user enters "exit" or kills this shell
 	for (;;) {
-		wcout << cDirBuffer << "> ";
+		wcout << "\n" << cDirBuffer << "> ";
 		cin.getline(cmd, CMD_SZ);
 		if (strcmp(cmd, "exit") == 0) break;
 		// Macro needed to use A2T below
