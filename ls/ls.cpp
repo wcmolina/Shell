@@ -18,23 +18,22 @@ int _tmain(int argc, TCHAR *argv[])
 		printf("GetCurrentDirectory failed (%d)\n", GetLastError());
 		return 0;
 	}
-	// Concat cDirBuffer with *
 	StringCchCat(cDirBuffer, MAX_PATH, TEXT("\\*"));
 
-	WIN32_FIND_DATA data;
-	HANDLE hFind = FindFirstFile(cDirBuffer, &data);
 	LARGE_INTEGER fileSz;
 	SYSTEMTIME stUTC, stLocal;
 	TCHAR writeTimeBuffer[MAX_PATH];
 	BOOL isDir, isHidden;
+	WIN32_FIND_DATA data;
+	HANDLE hFind = FindFirstFile(cDirBuffer, &data);
 
 	if (hFind != INVALID_HANDLE_VALUE) {
 		if (argc >= 2) {
 			do {
 				isDir = (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 				isHidden = (data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN);
-				// _tcscmp returns 0 when they are equal
 				// ls -m
+				// _tcscmp returns 0 when they are equal
 				if (!_tcscmp(argv[1], _T("-m")) && !isHidden) {
 					if (isDir) wcout << data.cFileName << "/, ";
 					else wcout << data.cFileName << ", ";
@@ -67,9 +66,7 @@ int _tmain(int argc, TCHAR *argv[])
 				}
 			} while (FindNextFile(hFind, &data));
 			// Just print an extra space after ls -m
-			if (!_tcscmp(argv[1], _T("-m"))) {
-				cout << endl;
-			}
+			if (!_tcscmp(argv[1], _T("-m"))) cout << endl;
 		}
 		// No args, simple ls
 		else {
