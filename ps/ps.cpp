@@ -36,11 +36,13 @@ BOOL GetProcessList()
 		return(FALSE);
 	}
 	// Now walk the snapshot of processes, and display information about each process in turn
+	// Print headers
+	_tprintf(TEXT("\n%-35s%s"), TEXT("Process name"), TEXT("PID"));
+	_tprintf(TEXT("\n%-35s%s"), TEXT("=================================="), TEXT("======"));
 	do
 	{
 		_tprintf(TEXT("\n%-35s%lu"), pe32.szExeFile, pe32.th32ProcessID);
 		//_tprintf(TEXT("\n%d"), pe32.cntThreads); // Thread count
-		//_tprintf(TEXT("\n0x%08X"), pe32.th32ParentProcessID); // Parent process ID
 	} while (Process32Next(hProcessSnap, &pe32));
 	CloseHandle(hProcessSnap);
 	return(TRUE);
