@@ -30,7 +30,7 @@ int _tmain(int argc, TCHAR *argv[])
 
 	if (hFind != INVALID_HANDLE_VALUE) {
 		if (argc == 2) {
-			if (argv[1][0] == 'c' || argv[1][0] == 'C') {
+			if (argv[1][0] == 'C') {
 				TCHAR Directory[MAX_PATH];
 				int i = 0;
 				int iD = 0;
