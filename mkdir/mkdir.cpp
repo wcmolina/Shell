@@ -8,8 +8,9 @@
 
 using namespace std;
 
-int _tmain(int argc, TCHAR *argv[])
-{
+void printHelp();
+
+int _tmain(int argc, TCHAR *argv[]) {
 	// Current directory
 	DWORD cDirRet;
 	TCHAR cDirBuffer[MAX_PATH];
@@ -49,34 +50,28 @@ int _tmain(int argc, TCHAR *argv[])
 				TCHAR* SecondDirectory = Directory;
 				if (CreateDirectory(SecondDirectory, NULL)) {
 					wcout << "Folder " << argv[1] << " Creado Exitosamente" << endl;
-				}
-				else if (ERROR_ALREADY_EXISTS == GetLastError()) {
+				} else if (ERROR_ALREADY_EXISTS == GetLastError()) {
 					wcout << "Directorio ya Existente" << endl;
-				}
-				else {
+				} else if (ERROR_PATH_NOT_FOUND == GetLastError()) {
 					wcout << "No quiere funcionar" << endl;
 				}
-			}
-			else {
+			} else {
 				TCHAR Directory[MAX_PATH];
 				int i = 0;
 				int iD = 0;
 				while (cDirBuffer[i] != '*') {
-					if (cDirBuffer[i] == '\\')
-					{
+					if (cDirBuffer[i] == '\\') {
 						Directory[iD] = '\\';
 						iD++;
 						Directory[iD] = '\\';
-					}
-					else {
+					} else {
 						Directory[iD] = cDirBuffer[i];
 					}
 					i++;
 					iD++;
 				}
 				int j = 0;
-				while (argv[1][j] != NULL)
-				{
+				while (argv[1][j] != NULL) {
 					Directory[iD] = argv[1][j];
 					iD++;
 					j++;
@@ -85,24 +80,22 @@ int _tmain(int argc, TCHAR *argv[])
 				TCHAR* SecondDirectory = Directory;
 				if (CreateDirectory(SecondDirectory, NULL)) {
 					wcout << "Folder " << argv[1] << " Creado Exitosamente" << endl;
-				}
-				else if (ERROR_ALREADY_EXISTS == GetLastError()) {
+				} else if (ERROR_ALREADY_EXISTS == GetLastError()) {
 					wcout << "Directorio ya Existente" << endl;
-				}
-				else {
+				} else {
 					wcout << "No quiere funcionar" << endl;
 				}
 			}
-		}
-		else if (argc == 1)
-		{
-			wcout << "Se necesita un nombre para la carpeta " << endl;
-		}
-		else
-		{
-			wcout << "Argumentos De Mas" << endl;
+		} else if (argc < 2) {
+			printHelp();
+		} else if (argc > 2) {
+			printHelp();
 		}
 		FindClose(hFind);
 	}
 	return 0;
+}
+
+void printHelp() {
+	wcout << "mkdir usage: " << endl << "mkdir rutaAbsoluta|nombreArchivo" << endl;
 }
