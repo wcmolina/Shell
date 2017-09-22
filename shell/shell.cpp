@@ -21,7 +21,7 @@ int _tmain(int argc, TCHAR *argv[])
 	ZeroMemory(&pi, sizeof(pi));
 	
 	// Command
-	const int CMD_SZ = 64;
+	const int CMD_SZ = 256;
 	char cmd[CMD_SZ];
 
 	// Current directory
@@ -119,6 +119,13 @@ int _tmain(int argc, TCHAR *argv[])
 		if (cmd[0] == NULL) {
 			continue;
 		}
+
+		// GUI programs: if it ends in &, don't block the shell. If it doesn't end in &, block it.
+		char lastChar = cmd[strlen(cmd) - 1];
+		if (lastChar == '&') {
+			// remove it
+			cmd[strlen(cmd) - 1] = '\0';
+		}
 		// Macro needed to use A2T below
 		USES_CONVERSION;
 		// Start the child process.
@@ -139,8 +146,13 @@ int _tmain(int argc, TCHAR *argv[])
 			return 0;
 		}
 
-		// Wait until child process exits.
-		WaitForSingleObject(pi.hProcess, INFINITE);
+		// Wait until child process exits if cmd doesn't end in '&'
+		if (lastChar != '&') {
+			WaitForSingleObject(pi.hProcess, INFINITE);
+		}
+		else {
+			WaitForSingleObject(pi.hProcess, 0);
+		}
 
 		// Close process and thread handles.
 		CloseHandle(pi.hProcess);
