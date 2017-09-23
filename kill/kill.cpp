@@ -48,20 +48,6 @@ int _tmain(int argc, TCHAR *argv[])
 
 	//_wtol: converts wchar_t* to DWORD
 	DWORD p_id = _wtol(argv[1]);
-
-	// Get the list of process identifiers.
-	DWORD aProcesses[1024], cbNeeded, cProcesses;
-	unsigned int i;
-	if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) return 1;
-	// Calculate how many process identifiers were returned.
-	cProcesses = cbNeeded / sizeof(DWORD);
-	// Print the name and process identifier for each process.
-	for (i = 0; i < cProcesses; i++)
-	{
-		if (aProcesses[i] != 0)
-		{
-			if (aProcesses[i] == p_id) killProcessById(p_id);
-		}
-	}
+	killProcessById(p_id);
 	return 0;
 }
